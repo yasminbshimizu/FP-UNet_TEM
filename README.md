@@ -15,9 +15,9 @@
 
 **Colaboradores Ilum:** Letícia Almeida Nunes & Rafael Dalacorte Erdmann.
 
-**Colaboradores LNNano:** Ana Luísa Carvalho Mendonça & Yasmin Watanabe de Moura.
+**Colaboradores LNNano:** Ana Luísa Carvalho Mendonça & Dra. Yasmin Watanabe de Moura.
 
-**Supervisão e Co-Supervisão:** Bruno Focassio & Vinícius Francisco Wasques.
+**Supervisão e Co-Supervisão:** Dr. Bruno Focassio & Prof. Dr. Vinícius Francisco Wasques.
 
 | [<img loading="lazy" src="https://avatars.githubusercontent.com/u/172424779?v=4" width=115><br><sub> Júlia Guedes </sub>](https://github.com/JuliaGuedesASantos)<br> [<sub>Ilum - CNPEM</sub>](https://ilum.cnpem.br/)<br> [<sub>Currículo Lattes</sub>](http://lattes.cnpq.br/9504021537643847)<br> [<sub>Linkedin</sub>](https://www.linkedin.com/in/j%C3%BAlia-guedes-546542283/) | [<img loading="lazy" src="https://avatars.githubusercontent.com/u/171518829?v=4" width=115><br><sub>Yasmin Shimizu</sub>](https://github.com/yasminbshimizu)<br> [<sub>Ilum - CNPEM</sub>](https://ilum.cnpem.br/)<br> [<sub>Currículo Lattes</sub>](https://wwws.cnpq.br/cvlattesweb/PKG_MENU.menu?f_cod=B946BED44B4E2F555F7290AF3E8AF4F3#)<br> [<sub>Linkedin</sub>](https://www.linkedin.com/in/yasminbshimizu/)
 | :---: | :---: |
