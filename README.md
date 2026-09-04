@@ -7,7 +7,7 @@
 </p>
 
 <div align="center">
-  <img src="https://github.com/user-attachments/assets/ccb6f5f1-0e07-4eb2-aa7c-5f681c57a59c" alt="Descrição da imagem" width="1000"/>
+  <img src="imagens_README/logos_ilumcnpem.png"/>
 </div>
 
 ## 📝 Resumo
