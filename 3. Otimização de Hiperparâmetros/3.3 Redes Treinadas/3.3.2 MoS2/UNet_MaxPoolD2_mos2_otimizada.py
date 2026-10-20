@@ -18,12 +18,12 @@ from torchmetrics import Accuracy, Recall, Precision, Specificity, F1Score
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 
-from unet_mos2 import UNet 
+from unet_multiclasse import UNet_MulticlasseD2 
 
 from codecarbon import EmissionsTracker
 
 def treino(modelo, otimizador, imgs_treino, mascaras_treino, 
-           imgs_val, mascaras_val, n_epocas=500): 
+           imgs_val, mascaras_val, n_epocas=10000): 
  
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu") 
  
@@ -52,7 +52,7 @@ def treino(modelo, otimizador, imgs_treino, mascaras_treino,
 
     melhor_perda = float("inf") 
     contador = 0 
-    paciencia = 70 
+    paciencia = 100 
     pesos_menor_perda = None 
  
     modelo = modelo.to(device) 
@@ -143,11 +143,15 @@ def treino(modelo, otimizador, imgs_treino, mascaras_treino,
  
                 perda_val_epoca += val_perda.item()
 
-                acuracia_por_classe.append(acuracia(preds, mascaras))
-                sensibilidade_por_classe.append(sensibilidade(preds, mascaras)) 
-                especificidade_por_classe.append(especificidade(preds, mascaras))
-                precisao_por_classe.append(precisao(preds, mascaras))
-                f1_por_classe.append(f1(preds, mascaras))
+                acuracia_por_classe.append(acuracia(preds, mascaras).cpu().tolist())
+                sensibilidade_por_classe.append(sensibilidade(preds, mascaras).cpu().tolist()) 
+                especificidade_por_classe.append(especificidade(preds, mascaras).cpu().tolist())
+                precisao_por_classe.append(precisao(preds, mascaras).cpu().tolist())
+                f1_por_classe.append(f1(preds, mascaras).cpu().tolist())
+        
+        perda_val_epoca /= len(loader_val)
+        
+        val_perdas.append(perda_val_epoca)
         
         acc0 = sum([a[0] for a in acuracia_por_classe])/len(acuracia_por_classe)
         acc1 = sum([a[1] for a in acuracia_por_classe])/len(acuracia_por_classe)
@@ -158,16 +162,16 @@ def treino(modelo, otimizador, imgs_treino, mascaras_treino,
         sen2 = sum([s[2] for s in sensibilidade_por_classe])/len(sensibilidade_por_classe)
 
         esp0 = sum([e[0] for e in especificidade_por_classe])/len(especificidade_por_classe)
-        esp1 = sum([e[0] for e in especificidade_por_classe])/len(especificidade_por_classe)
-        esp2 = sum([e[0] for e in especificidade_por_classe])/len(especificidade_por_classe)
+        esp1 = sum([e[1] for e in especificidade_por_classe])/len(especificidade_por_classe)
+        esp2 = sum([e[2] for e in especificidade_por_classe])/len(especificidade_por_classe)
 
         pre0 = sum([p[0] for p in precisao_por_classe])/len(precisao_por_classe)
-        pre1 = sum([p[0] for p in precisao_por_classe])/len(precisao_por_classe)
-        pre2 = sum([p[0] for p in precisao_por_classe])/len(precisao_por_classe)
+        pre1 = sum([p[1] for p in precisao_por_classe])/len(precisao_por_classe)
+        pre2 = sum([p[2] for p in precisao_por_classe])/len(precisao_por_classe)
 
         f1_0 = sum([f[0] for f in f1_por_classe])/len(f1_por_classe)
-        f1_1 = sum([f[0] for f in f1_por_classe])/len(f1_por_classe)
-        f1_2 = sum([f[0] for f in f1_por_classe])/len(f1_por_classe)
+        f1_1 = sum([f[1] for f in f1_por_classe])/len(f1_por_classe)
+        f1_2 = sum([f[2] for f in f1_por_classe])/len(f1_por_classe)
 
         acuracia_classe0_lista.append(acc0)
         sensibilidade_classe0_lista.append(sen0)
@@ -207,7 +211,7 @@ def treino(modelo, otimizador, imgs_treino, mascaras_treino,
  
                 break 
     
-    with open("U_Net_MaxPool_mos2", "wb") as unet:
+    with open("U_Net_MaxPool_mos2_otimizada.pkl", "wb") as unet:
         pickle.dump(modelo, unet)
         unet.close()
  
@@ -230,7 +234,16 @@ def treino(modelo, otimizador, imgs_treino, mascaras_treino,
         "Precisão - Classe 2": precisao_classe2_lista,
         "F1 - Classe 2": f1_classe2_lista,
     }
- 
+    
+    print(f"Treino Perdas: {len(treino_perdas)}")
+    print(f"Validação Perdas: {len(val_perdas)}")
+    print(f"Acurácia 0: {len(acuracia_classe0_lista)}")
+    print(f"Especificidade 0: {len(especificidade_classe0_lista)}")
+    print(f"Sensibilidade 0: {len(sensibilidade_classe0_lista)}")
+    print(f"Precisão: {len(precisao_classe0_lista)}")
+    print(f"F1 0: {len(f1_classe0_lista)}")
+    print(f"Acurácia 1: {len(acuracia_classe1_lista)}")
+
     df = pd.DataFrame(dicionario) 
  
     os.makedirs("dfs_perdas/mos2", exist_ok=True) 
@@ -251,7 +264,7 @@ with EmissionsTracker(project_name="codecarbon_unet_mos2_otimizada") as tracker:
         print("Início", flush=True)
 
         dados = np.load(
-            "../Datasets_finais/graphene_dataset0.npz"
+            "../Datasets_finais/mos2_dataset_0.npz"
         )
 
 
@@ -300,7 +313,7 @@ with EmissionsTracker(project_name="codecarbon_unet_mos2_otimizada") as tracker:
         tamanho_kernel = 5
         func_ativacao = nn.ReLU6(inplace=True)
 
-        modelo =  UNet(tamanho_kernel, func_ativacao).to(device)
+        modelo =  UNet_MulticlasseD2(tamanho_kernel, func_ativacao).to(device)
 
         otimizador = optim.AdamW(modelo.parameters(), lr=0.0001)
 

@@ -18,7 +18,7 @@ from torchmetrics import Accuracy, Recall, Precision, Specificity, F1Score
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 
-from unet_mos2 import UNet 
+from unet_multiclasse import UNet_MulticlasseD2 
 
 from codecarbon import EmissionsTracker
 
@@ -143,12 +143,16 @@ def treino(modelo, otimizador, imgs_treino, mascaras_treino,
  
                 perda_val_epoca += val_perda.item()
 
-                acuracia_por_classe.append(acuracia(preds, mascaras))
-                sensibilidade_por_classe.append(sensibilidade(preds, mascaras)) 
-                especificidade_por_classe.append(especificidade(preds, mascaras))
-                precisao_por_classe.append(precisao(preds, mascaras))
-                f1_por_classe.append(f1(preds, mascaras))
+                acuracia_por_classe.append(acuracia(preds, mascaras).cpu().tolist())
+                sensibilidade_por_classe.append(sensibilidade(preds, mascaras).cpu().tolist()) 
+                especificidade_por_classe.append(especificidade(preds, mascaras).cpu().tolist())
+                precisao_por_classe.append(precisao(preds, mascaras).cpu().tolist())
+                f1_por_classe.append(f1(preds, mascaras).cpu().tolist())
         
+        perda_val_epoca /= len(loader_val)
+
+        val_perdas.append(perda_val_epoca)
+
         acc0 = sum([a[0] for a in acuracia_por_classe])/len(acuracia_por_classe)
         acc1 = sum([a[1] for a in acuracia_por_classe])/len(acuracia_por_classe)
         acc2 = sum([a[2] for a in acuracia_por_classe])/len(acuracia_por_classe)
@@ -207,7 +211,7 @@ def treino(modelo, otimizador, imgs_treino, mascaras_treino,
  
                 break 
     
-    with open("U_Net_MaxPool_mos2_sem_otimizacao", "wb") as unet:
+    with open("U_Net_MaxPool_mos2_sem_otimizacao.pkl", "wb") as unet:
         pickle.dump(modelo, unet)
         unet.close()
  
@@ -251,7 +255,7 @@ with EmissionsTracker(project_name="codecarbon_unet_mos2_sem_otimizacao") as tra
         print("Início", flush=True)
 
         dados = np.load(
-            "../Datasets_finais/graphene_dataset0.npz"
+            "../Datasets_finais/mos2_dataset_0.npz"
         )
 
 
@@ -300,7 +304,7 @@ with EmissionsTracker(project_name="codecarbon_unet_mos2_sem_otimizacao") as tra
         tamanho_kernel = 3
         func_ativacao = nn.ReLU(inplace=True)
 
-        modelo =  UNet(tamanho_kernel, func_ativacao).to(device)
+        modelo =  UNet_MulticlasseD2(tamanho_kernel, func_ativacao).to(device)
 
         otimizador = optim.Adam(modelo.parameters(), lr=0.001)
 

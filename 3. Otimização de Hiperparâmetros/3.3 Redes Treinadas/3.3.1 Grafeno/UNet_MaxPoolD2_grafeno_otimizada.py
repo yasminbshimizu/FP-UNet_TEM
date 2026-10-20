@@ -17,7 +17,7 @@ from torch.utils.data import TensorDataset, DataLoader
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 
-from unet import UNet 
+from unet_binaria import UNet_BinariaD2 
 
 from codecarbon import EmissionsTracker
 
@@ -57,7 +57,7 @@ def treino(modelo, otimizador, imgs_treino, mascaras_treino,
     loader_val = DataLoader( 
         dataset_val, 
         batch_size=8, 
-        shuffle=False 
+        shuffle=True 
     ) 
  
     for epoca in tqdm(range(n_epocas)): 
@@ -178,7 +178,7 @@ def treino(modelo, otimizador, imgs_treino, mascaras_treino,
  
                 break 
     
-    with open("U_Net_MaxPool_grafeno_sem_otimizacao", "wb") as unet:
+    with open("U_Net_MaxPool_grafeno.pkl", "wb") as unet:
         pickle.dump(modelo, unet)
         unet.close()
 
@@ -198,15 +198,13 @@ def treino(modelo, otimizador, imgs_treino, mascaras_treino,
     os.makedirs("dfs_perdas/grafeno", exist_ok=True) 
  
     df.to_csv(
-        "dfs_perdas/grafeno/sem_otimizacao.csv",
+        "dfs_perdas/grafeno/otimizacao1.csv",
         index=False
     )
  
-    os.makedirs("metricas/grafeno/u_net", exist_ok=True)
- 
     return treino_perdas, val_perdas, melhor_perda, pesos_menor_perda
 
-with EmissionsTracker(project_name="codecarbon_unet_grafeno_sem_otimizacao") as tracker:
+with EmissionsTracker(project_name="codecarbon_unet_grafeno_otimizada") as tracker:
 
     if __name__ == "__main__":
         
@@ -261,12 +259,12 @@ with EmissionsTracker(project_name="codecarbon_unet_grafeno_sem_otimizacao") as 
             mascaras_treino = mascaras_treino.unsqueeze(1)
             mascaras_val = mascaras_val.unsqueeze(1)
         
-        tamanho_kernel = 3
-        func_ativacao = nn.ReLU(inplace=True)
+        tamanho_kernel = 5
+        func_ativacao = nn.SiLU(inplace=True)
  
-        modelo =  UNet(tamanho_kernel, func_ativacao).to(device)
+        modelo =  UNet_BinariaD2(tamanho_kernel, func_ativacao).to(device)
         
-        otimizador = optim.Adam(modelo.parameters(), lr=0.001)
+        otimizador = optim.Adam(modelo.parameters(), lr=0.0001)
         
         treino_perdas, val_perdas, melhor_perda, pesos_menor_perda = treino(
             modelo,
