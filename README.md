@@ -11,13 +11,45 @@
 </div>
 
 ## 📝 Resumo
-A **segmentação de imagens** pode ser definida como o processo de atribuir rótulos a pixels ou regiões com características semelhantes, permitindo a identificação de diferentes estruturas na figura. A fim de obter um bom desempenho nessa tarefa, métodos de **aprendizado profundo** têm sido utilizados, sendo a **U-Net** uma das arquiteturas mais famosas de rede neural para segmentação. 
+O presente projeto tem o intuito de realizar comparações de **performance** e **prejuízo ambiental** entre modelos de **aprendizado profundo** para **segmentação de imagens** simuladas de **TEM**. O diferencial do projeto se dá na implementação de lógica fuzzy a essas redes, através da operação de ***pooling* fuzzy**  (FP, do inglês *fuzzy pooling*), cuja proposta é incorporar os ruídos presentes na imagem ao realizar a redução de dimensionalidade, obtendo previsões mais precisas.
+
+A **hipótese central do trabalho** é que, apesar da **lógica fuzzy** aumentar o número de operações realizadas em cada etapa do treinamento, o aumento de desempenho possibilita a utilização de arquiteturas menos complexas, e, consequentemente, com **menor custo computacional**. Os resultados obtidos serão avaliados por métricas de classificação (como acurácia e coeficiente de Dice), de quantificação (como RMSE) e com explicabilidade de modelos (via SHAP e GradCam). Além disso, o tempo, energia e emissões de carbono dos modelos serão estimados através da biblioteca CodeCarbon.
+
+<!-- A **segmentação de imagens** pode ser definida como o processo de atribuir rótulos a pixels ou regiões com características semelhantes, permitindo a identificação de diferentes estruturas na figura. A fim de obter um bom desempenho nessa tarefa, métodos de **aprendizado profundo** têm sido utilizados, sendo a **U-Net** uma das arquiteturas mais famosas de rede neural para segmentação. 
 Um exemplo de aplicação desse modelo são imagens de **microscopia eletrônica de transmissão (TEM)**, que tendem a apresentar bastante rúído e baixo contraste, complexificando a tarefa. Em materiais como o **MoS2** --- com propriedades eletrônicas, ópticas e mecânicas exploradas, por exemplo, na catálise de reações de evolução de hidrogênio ---, a segmentação pode ser utilizada para diferenciar átomos Mo e S. 
 Entretanto, objetivando o treinamento de uma rede neural, a obtenção de um grande volume de imagens de microscopia eletrônica rotuladas é dificultada, de modo que uma alternativa é a **simulação** de sistemas dos compostos desejados e suas respectivas imagens de microscopia, a fim de utilizar técnicas de *transfer learning* com o intuito de adaptar tais modelos para o uso em imagens reais. 
 É necessário, porém, reconhecer que o uso de inteligência artificial apresenta um elevado **custo ambiental**, com um enormes gasto energético e emissões de CO2 por treinamento. A alternativa para redução de custo computacional da segmentação aqui proposta é a incorporação de **lógica fuzzy** em redes neurais convolucionais através do ***\textit{pooling} fuzzy*** (FP, do inglês *fuzzy pooling*), lidando melhor com ruído nos conjuntos de dados e melhorando o desempenho da rede.
 Assim, o presente projeto tem o intuito de comparar **performance e impacto ambiental** entre modelos de aprendizado profundo crisp e fuzzy para segmentação de imagens. Para isso, serão **simuladas imagens de TEM  de MoS2**, as quais serão utilizadas no treino e teste de modelos **U-Net e FP/U-Net** com diferentes profundidades para identificação de átomos. Assim, a hipótese principal do trabalho é que aderir à lógica fuzzy em redes U-Net apresenta desempenho similar ao aumento de profundidade das mesmas, de maneira menos custosa. Os resultados obtidos serão avaliados através de métricas de classificação, como acurácia e IoU, de quantificação, como RMSE, e com **explicabilidade** de modelos, via SHAP e GradCam. Além disso, o tempo, energia e emissões de carbono dos modelos treinados serão estimados utilizando a biblioteca Python CodeCarbon, conectando com debates acerca dos impactos socioambientais causados pela inteligência artificial.
+-->
 
 **Palavras-chave:** U-Net; *Pooling* Fuzzy; Microscopia Eletrônica de Transmissão; Explicabilidade; Impactos Socioambientais da Inteligência Artificial; MoS2.
+
+
+## 🗂️ Arquivos
+
+Os arquivos do repositório estão organizados de acordo com as etapas do projeto:
+
+1. `Simulação de Imagens`
+
+     1.1 `Criação de Supercélulas`: Criação dos sistemas atômicos por suas coordenadas e criação das máscaras de rótulos.
+
+    1.2 `Criação de Datasets`: *data augmentation* para criação de *datasets* parciais, e concatenação em um único *dataset* final por tarefa.
+
+2. `Fuzzy Pooling`: implementação do fuzzy pooling em `torch`, validação e teste.
+
+3. `Otimização de Hiperparâmetros`
+
+     3.0 `Arquiteturas de Rede`: classes das redes binárias e multiclasse, crisp e fuzzy.
+
+     3.1 `Scripts de Otimização`: otimização bayesiana de cada rede proposta, separadas por tarefa.
+
+     3.2 `Resultados Optuna`: parâmetros obtidos na otimização, separados por tarefa.
+
+     3.3 `Redes Treinadas`: treinamentos de rede base (literatura) e otimizadas, separados por tarefa.
+
+4. `Explicabilidade`: explicação das previsões com SegGradCAM.
+
+
 
 ## 🧠 Contribuições dos Colaboradores
 **Desenvolvimento:** Júlia Guedes Almeida dos Santos & Yasmin Barbosa Shimizu.
