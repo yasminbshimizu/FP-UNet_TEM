@@ -23,7 +23,7 @@ from unet_multiclasse import UNet_MulticlasseD2
 from codecarbon import EmissionsTracker
 
 def treino(modelo, otimizador, imgs_treino, mascaras_treino, 
-           imgs_val, mascaras_val, n_epocas=10000): 
+           imgs_val, mascaras_val, n_epocas=500): 
  
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu") 
  
@@ -249,7 +249,7 @@ def treino(modelo, otimizador, imgs_treino, mascaras_treino,
     os.makedirs("dfs_perdas/mos2", exist_ok=True) 
  
     df.to_csv(
-        "dfs_perdas/mos2/otimizacao1.csv",
+        "dfs_perdas/mos2/perdas_otimizacao1_unetd2_mos2.csv",
         index=False
     )
  

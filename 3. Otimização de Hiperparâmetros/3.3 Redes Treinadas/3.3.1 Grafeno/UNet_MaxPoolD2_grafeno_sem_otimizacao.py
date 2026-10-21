@@ -198,7 +198,7 @@ def treino(modelo, otimizador, imgs_treino, mascaras_treino,
     os.makedirs("dfs_perdas/grafeno", exist_ok=True) 
  
     df.to_csv(
-        "dfs_perdas/grafeno/sem_otimizacao.csv",
+        "dfs_perdas/grafeno/perdas_sem_otimizacao_unetd2_grafeno.csv",
         index=False
     )
  
