@@ -1,6 +1,0 @@
-# Imagens de simulação pesadas
-*.tif
-*.tiff
-
-# Datasets
-*.npz
