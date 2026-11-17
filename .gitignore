@@ -1,10 +1,16 @@
-*.npz
+﻿*.npz
 *.tif
 *.tiff
 
 # Modelos muito grandes
-3_Otimiza��o-de-Hiperpar�metros/3_3_Redes-Treinadas/3_3_2_MoS2/U_NetD2_FuzzyPool_mos2_otimizada.pkl
-3_Otimiza��o-de-Hiperpar�metros/3_3_Redes-Treinadas/3_3_1_Grafeno/U_NetD2_FuzzyPool_grafeno_otimizada.pkl
+3_Otimiza  o-de-Hiperpar metros/3_3_Redes-Treinadas/3_3_2_MoS2/U_NetD2_FuzzyPool_mos2_otimizada.pkl
+3_Otimiza  o-de-Hiperpar metros/3_3_Redes-Treinadas/3_3_1_Grafeno/U_NetD2_FuzzyPool_grafeno_otimizada.pkl
 
 /3_Otimiza*/3_3_Redes-Treinadas/3_3_2_MoS2/U_NetD2_FuzzyPool_mos2_otimizada.pkl
 /3_Otimiza*/3_3_Redes-Treinadas/3_3_1_Grafeno/U_NetD2_FuzzyPool_grafeno_otimizada.pkl
+
+/3_Otimização-de-Hiperparâmetros/3_3_Redes-Treinadas/3_3_1_Grafeno/U_NetD2_FuzzyPool_grafeno_dados_completos.pkl
+/3_Otimização-de-Hiperparâmetros/3_3_Redes-Treinadas/3_3_1_Grafeno/U_NetD3_FuzzyPool_grafeno_dados_completos.pkl
+
+/3_Otimização-de-Hiperparâmetros/3_3_Redes-Treinadas/3_3_2_MoS2/U_NetD2_FuzzyPool_mos2_dados_completos.pkl
+/3_Otimização-de-Hiperparâmetros/3_3_Redes-Treinadas/3_3_2_MoS2/U_NetD3_FuzzyPool_mos2_dados_completos.pkl
